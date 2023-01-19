@@ -44,10 +44,11 @@ const jwtAuthorization = async(req, res, next) => {
 }
 
 // private routes
-app.get("/verify", jwtAuthorization, async(req, res) => {
+app.post("/verify", jwtAuthorization, (req, res) => {
     try {
       res.json(true);
     } catch (e) {
+      res.status(500).send("Server error");
       console.log(e.message);
     }
   }
@@ -99,30 +100,34 @@ app.route("/register")
 
 app.route("/login")
   .post(async (req, res) => {
-    const {user_name, user_pw} = req.body;
-    const password = user_pw.toString();
+    try {
+      const {user_name, user_pw} = req.body;
+      console.log(req.body);
+      const password = user_pw.toString();
 
-    const user = await db.query(
-      "SELECT * FROM users WHERE user_name = $1",
-      [user_name]
-    );
+      const user = await db.query(
+        "SELECT * FROM users WHERE user_name = $1",
+        [user_name]
+      );
 
-    if (user.length < 1) {
-      return res.status(403).json("User does not exist");
-    } 
+      if (user.length < 1) {
+        return res.status(403).json("User does not exist");
+      } 
 
-    const isValidPassword = await bcrypt.compare(password, user[0].user_pw);
+      const isValidPassword = await bcrypt.compare(password, user[0].user_pw);
 
-    if (!isValidPassword) {
-      res.json({received : "true", error : "invalid password",});
-      return;
-    } else {
-      console.log("SUCCESSFUL LOG IN");
+      if (!isValidPassword) {
+        return res.status(403).json("Invalid password")
+      } else {
+        console.log("Successfully logged in");
+      }
+
+      const token = jwtGenerator(user[0].user_id);
+      res.json({jwtToken: `${token}`});
+    } catch (e) {
+      console.log(e.message);
     }
-
-    const token = jwtGenerator(user[0].user_id);
-    res.json({jwtToken: `${token}`});
-  }
+  } 
 );
 
 // dashboard route
