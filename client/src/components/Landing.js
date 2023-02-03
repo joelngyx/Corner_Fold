@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from '../assets/Logo.svg';
 import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
@@ -13,10 +14,15 @@ const Landing = () => {
   }
 
   return (
-    <div>
-      <h1>CornerFold</h1>
-      <button onClick={goToRegister}>register</button>
-      <button onClick={goToLogin}>login</button>
+    <div className="landing center">
+      <img className="logo" src={Logo} alt="CornerFold Logo"/>
+      <div className="center">
+        <h1>CornerFold</h1>
+        <div className="landing-btns">
+          <button onClick={goToRegister}>Register</button>
+          <button onClick={goToLogin}>Login</button>
+        </div>
+      </div>
     </div>
   )
 }

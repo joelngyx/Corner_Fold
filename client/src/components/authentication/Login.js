@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
@@ -34,23 +34,31 @@ const Login = (props) => {
         props.setAuth(true);
       }
     } catch (e) {
+      setErrorMsg(<p className="error-p">Something went wrong. Try again!</p>);
       console.log(e.message);
     }
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      <div>
-        <input placeholder="provide a username" value={username}
-          onChange={(e) => {setUsername(e.target.value);}}/>
-      </div>
-      <div>
-        <input placeholder="provide a password" value={password}
-          onChange={(e) => {setPassword(e.target.value)}}/></div>
-      <button onClick={handleSubmit}>Submit</button>
-      <button onClick={goToLandingPage}>Back</button>
-      <div>{errorMsg}</div>
+    <div className="landing center">
+      <div className="center">
+        <h1>Login</h1>
+        <input placeholder="Provide a username" value={username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setErrorMsg();
+            }}/>
+          <input placeholder="Provide a password" value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setErrorMsg();
+            }}/>
+          <div className="landing-btns">
+            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={goToLandingPage}>Back</button>
+          </div>
+          {errorMsg}
+      </div> 
     </div>
   );
 }

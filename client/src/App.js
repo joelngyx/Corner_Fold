@@ -1,10 +1,10 @@
-import './App.css';
+import './style.scss';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from "./components/Login";
-import Register from "./components/Register";
-import TestPage from "./components/TestPage";
+import Login from "./components/authentication/Login";
+import Register from "./components/authentication/Register";
 import Landing from "./components/Landing";
+import Dashboard from './components/Dashboard';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,13 +32,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" 
-            element={isAuthenticated ? <TestPage/> : <Landing/>}/>
+            element={isAuthenticated ? <Dashboard/> : <Landing/>}/>
           <Route exact path="/login" 
-            element={isAuthenticated ? <Navigate to="/testpage"/> : <Login setAuth={setIsAuthenticated}/>}/>
+            element={isAuthenticated ? <Navigate to="/dashboard"/> : <Login setAuth={setIsAuthenticated}/>}/>
           <Route exact path="/register" 
-            element={isAuthenticated ? <Navigate to="/testpage"/> : <Register setAuth={setIsAuthenticated}/>}/>
-          <Route exact path="/testpage" 
-            element={isAuthenticated ? <TestPage setAuth={setIsAuthenticated}/> : <Navigate to="/login"/>}/>
+            element={isAuthenticated ? <Navigate to="/dashboard"/> : <Register setAuth={setIsAuthenticated}/>}/>
+          <Route exact path="/dashboard" 
+            element={isAuthenticated ? <Dashboard setAuth={setIsAuthenticated}/> : <Navigate to="/login"/>}/>
         </Routes>
       </BrowserRouter>
     </div>

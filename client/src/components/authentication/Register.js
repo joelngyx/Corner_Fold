@@ -12,11 +12,11 @@ const Register = (props) => {
   const navigate = useNavigate();
 
   const setErrorMsgListUsername = (conditions) => {
-    setErrorMsgUsername(<ul>{conditions.map((condition, index) => <p key={index}>{condition}</p>)}</ul>);
+    setErrorMsgUsername(conditions.map((condition, index) => <p className="error-p" key={index}>{condition}</p>));
   }
 
   const setErrorMsgListPassword = (conditions) => {
-    setErrorMsgPassword(<ul>{conditions.map((condition, index) => <p key={index}>{condition}</p>)}</ul>);
+    setErrorMsgPassword(conditions.map((condition, index) => <p className="error-p" key={index}>{condition}</p>));
   }
 
   const validateUsername = () => {
@@ -82,20 +82,23 @@ const Register = (props) => {
   }
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className="landing center">
       <div>
-        <input placeholder="provide a username" value={username}
-          onChange={(e) => {setUsername(e.target.value);}}/>
+        <h1>Register</h1>
+        <div>
+          <input placeholder="Provide a username" value={username}
+            onChange={(e) => {setUsername(e.target.value);}}/>
+          {errorMsgUsername}
+          <input placeholder="Provide a password" value={password}
+            onChange={(e) => {setPassword(e.target.value)}}/>
+          {errorMsgPassword}
+        </div>
+        <div className="landing-btns">
+          <button disabled={!detailsValid} 
+            onClick={handleSubmit}>Submit</button>
+          <button onClick={goToLandingPage}>Back</button>
+        </div>
       </div>
-      <div>{errorMsgUsername}</div>
-      <div>
-        <input placeholder="provide a password" value={password}
-          onChange={(e) => {setPassword(e.target.value)}}/></div>
-      <div>{errorMsgPassword}</div>
-      <button disabled={!detailsValid} 
-        onClick={handleSubmit}>Submit</button>
-      <button onClick={goToLandingPage}>Back</button>
       <div>{errorMsg}</div>
     </div>
   );
